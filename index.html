@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus Timer</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+height:100vh;
+background-size:cover;
+background-position:center;
+transition:background .6s ease;
+display:flex;
+justify-content:center;
+align-items:center;
+color:white;
+background:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070") center/cover;
+position:relative;
+}
+
+/* Background blur overlay */
+
+body::before{
+content:"";
+position:fixed;
+inset:0;
+backdrop-filter:blur(6px);
+background:rgba(0,0,0,0.25);
+z-index:-1;
+}
+
+.app{
+text-align:center;
+width:90%;
+max-width:900px;
+}
+
+/* MODES */
+
+.modes{
+display:flex;
+justify-content:center;
+gap:18px;
+margin-bottom:35px;
+}
+
+.mode-btn{
+padding:12px 28px;
+border-radius:40px;
+border:2px solid rgba(255,255,255,.4);
+background:rgba(255,255,255,.05);
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+.mode-btn.active{
+background:white;
+color:black;
+}
+
+/* TIMER */
+
+.timer{
+font-size:110px;
+font-weight:700;
+margin-bottom:25px;
+}
+
+/* CONTROLS */
+
+.controls{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-bottom:40px;
+}
+
+.control-btn{
+padding:16px 50px;
+border-radius:50px;
+border:none;
+background:white;
+color:black;
+font-size:20px;
+font-weight:700;
+cursor:pointer;
+}
+
+.icon-btn{
+font-size:18px;
+padding:10px 14px;
+border-radius:50%;
+background:rgba(255,255,255,.15);
+border:none;
+color:white;
+cursor:pointer;
+}
+
+/* SPOTIFY PANEL */
+
+.spotify-panel{
+margin-top:15px;
+padding:26px;
+border-radius:24px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.25);
+box-shadow:0 25px 60px rgba(0,0,0,.6);
+display:none;
+}
+
+/* INPUT */
+
+.spotify-loader{
+display:flex;
+justify-content:center;
+gap:10px;
+}
+
+.playlist-input{
+width:60%;
+padding:14px 18px;
+border-radius:30px;
+border:none;
+outline:none;
+font-size:14px;
+}
+
+.load-btn{
+padding:14px 26px;
+border:none;
+border-radius:30px;
+background:#1DB954;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+/* PLAYER */
+
+.spotify-player{
+margin-top:15px;
+}
+
+/* FOOTER MESSAGE */
+
+.footer-note{
+position:fixed;
+bottom:18px;
+left:50%;
+transform:translateX(-50%);
+font-size:14px;
+font-weight:500;
+color:rgba(255,255,255,0.8);
+letter-spacing:0.3px;
+pointer-events:none;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.timer{
+font-size:70px;
+}
+
+.control-btn{
+padding:14px 40px;
+font-size:18px;
+}
+
+.playlist-input{
+width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="modes">
+
+<button class="mode-btn active" onclick="setMode('pomodoro',25,this)">
+Pomodoro
+</button>
+
+<button class="mode-btn" onclick="setMode('short',5,this)">
+Short Break
+</button>
+
+<button class="mode-btn" onclick="setMode('long',15,this)">
+Long Break
+</button>
+
+</div>
+
+<div class="timer" id="timer">25:00</div>
+
+<div class="controls">
+
+<button class="control-btn" onclick="toggleTimer()" id="startPause">
+Start
+</button>
+
+<button class="icon-btn" onclick="resetTimer()">⟳</button>
+
+<button class="icon-btn" onclick="toggleMusic()">🎵</button>
+
+</div>
+
+<!-- SPOTIFY -->
+
+<div class="spotify-panel" id="spotifyPanel">
+
+<div class="spotify-loader">
+
+<input
+id="playlistInput"
+class="playlist-input"
+placeholder="Paste Spotify playlist link">
+
+<button class="load-btn" onclick="loadPlaylist()">
+Load Playlist
+</button>
+
+</div>
+
+<div class="spotify-player">
+
+<iframe
+id="spotifyPlayer"
+src=""
+width="100%"
+height="160"
+frameborder="0"
+allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- MESSAGE -->
+
+<div class="footer-note">
+made by sid for rey, happy 19 rey. 💜
+</div>
+
+<script>
+
+/* TIMER */
+
+let time=25*60
+let defaultTime=25*60
+let timerInterval=null
+let running=false
+
+function updateDisplay(){
+
+let minutes=Math.floor(time/60)
+let seconds=time%60
+
+document.getElementById("timer").innerText=
+`${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`
+
+}
+
+function toggleTimer(){
+
+if(running){
+
+clearInterval(timerInterval)
+document.getElementById("startPause").innerText="Start"
+running=false
+
+}else{
+
+timerInterval=setInterval(()=>{
+
+if(time>0){
+
+time--
+updateDisplay()
+
+}else{
+
+clearInterval(timerInterval)
+alert("Session complete 🎉")
+running=false
+document.getElementById("startPause").innerText="Start"
+
+}
+
+},1000)
+
+document.getElementById("startPause").innerText="Pause"
+running=true
+
+}
+
+}
+
+function resetTimer(){
+
+clearInterval(timerInterval)
+time=defaultTime
+updateDisplay()
+running=false
+document.getElementById("startPause").innerText="Start"
+
+}
+
+updateDisplay()
+
+/* BACKGROUNDS */
+
+const backgrounds={
+pomodoro:"url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070')",
+short:"url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2070')",
+long:"url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070')"
+}
+
+function setMode(mode,minutes,btn){
+
+document.querySelectorAll(".mode-btn")
+.forEach(b=>b.classList.remove("active"))
+
+btn.classList.add("active")
+
+defaultTime=minutes*60
+resetTimer()
+
+document.body.style.backgroundImage=backgrounds[mode]
+
+}
+
+/* MUSIC TOGGLE */
+
+let musicOpen=false
+
+function toggleMusic(){
+
+const panel=document.getElementById("spotifyPanel")
+
+if(musicOpen){
+
+panel.style.display="none"
+musicOpen=false
+
+}else{
+
+panel.style.display="block"
+musicOpen=true
+
+}
+
+}
+
+/* PLAYLIST IMPORT */
+
+function loadPlaylist(){
+
+let url=document.getElementById("playlistInput").value
+
+if(!url.includes("spotify.com")){
+alert("Paste a valid Spotify playlist link")
+return
+}
+
+let id=url.split("playlist/")[1].split("?")[0]
+
+let embed="https://open.spotify.com/embed/playlist/"+id
+
+document.getElementById("spotifyPlayer").src=embed
+
+}
+
+</script>
+
+</body>
+</html>
