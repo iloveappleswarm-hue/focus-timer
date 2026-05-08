@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Focus Timer</title>
 
@@ -19,35 +19,32 @@ font-family:'Inter',sans-serif;
 
 body{
 height:100vh;
-background-size:cover;
-background-position:center;
-transition:background .6s ease;
+background:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070') center/cover;
 display:flex;
 justify-content:center;
 align-items:center;
 color:white;
-background:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070") center/cover;
+overflow-y:auto;
+padding:40px 0;
 position:relative;
-overflow:hidden;
+transition:background .6s ease;
 }
 
-/* BACKGROUND OVERLAY */
-
 body::before{
-content:"";
+content:'';
 position:fixed;
 inset:0;
-backdrop-filter:blur(6px);
-background:rgba(0,0,0,0.25);
+background:rgba(0,0,0,.25);
+backdrop-filter:blur(8px);
 z-index:-1;
 }
 
-/* MAIN APP */
+/* APP */
 
 .app{
-text-align:center;
 width:90%;
-max-width:900px;
+max-width:950px;
+text-align:center;
 opacity:0;
 pointer-events:none;
 transition:.6s ease;
@@ -64,12 +61,11 @@ pointer-events:auto;
 position:fixed;
 inset:0;
 background:rgba(0,0,0,.55);
-backdrop-filter:blur(14px);
+backdrop-filter:blur(16px);
 display:flex;
 justify-content:center;
 align-items:center;
-z-index:999;
-transition:.5s ease;
+z-index:1000;
 }
 
 .intention-card{
@@ -81,13 +77,13 @@ background:rgba(255,255,255,.08);
 border:1px solid rgba(255,255,255,.2);
 backdrop-filter:blur(20px);
 text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,.45);
+box-shadow:0 25px 60px rgba(0,0,0,.45);
 animation:fadeUp .6s ease;
 }
 
 .intention-card h1{
 font-size:44px;
-margin-bottom:15px;
+margin-bottom:12px;
 }
 
 .intention-card p{
@@ -106,7 +102,7 @@ gap:15px;
 .intention-options button{
 padding:18px;
 border:none;
-border-radius:22px;
+border-radius:24px;
 background:white;
 color:black;
 font-size:18px;
@@ -119,7 +115,7 @@ transition:.25s;
 transform:translateY(-2px) scale(1.02);
 }
 
-/* PREPARATION SCREEN */
+/* PREP SCREEN */
 
 .prep-screen{
 position:fixed;
@@ -128,8 +124,8 @@ display:none;
 justify-content:center;
 align-items:center;
 background:rgba(0,0,0,.55);
-backdrop-filter:blur(14px);
-z-index:998;
+backdrop-filter:blur(16px);
+z-index:999;
 }
 
 .prep-card{
@@ -141,30 +137,30 @@ background:rgba(255,255,255,.08);
 border:1px solid rgba(255,255,255,.2);
 backdrop-filter:blur(20px);
 text-align:center;
-box-shadow:0 20px 60px rgba(0,0,0,.45);
+box-shadow:0 25px 60px rgba(0,0,0,.45);
 animation:fadeUp .5s ease;
 }
 
 .prep-label{
-font-size:20px;
+font-size:18px;
+color:rgba(255,255,255,.75);
 margin-bottom:10px;
-color:rgba(255,255,255,.8);
 }
 
 .prep-task{
-font-size:36px;
+font-size:38px;
 font-weight:700;
 margin-bottom:30px;
 }
 
 .prep-timer{
-font-size:80px;
+font-size:90px;
 font-weight:700;
 margin-bottom:25px;
 }
 
 .skip-btn{
-padding:14px 28px;
+padding:14px 30px;
 border:none;
 border-radius:30px;
 background:white;
@@ -180,13 +176,14 @@ display:flex;
 justify-content:center;
 gap:18px;
 margin-bottom:35px;
+flex-wrap:wrap;
 }
 
 .mode-btn{
 padding:12px 28px;
 border-radius:40px;
-border:2px solid rgba(255,255,255,.4);
-background:rgba(255,255,255,.05);
+border:2px solid rgba(255,255,255,.35);
+background:rgba(255,255,255,.06);
 color:white;
 font-weight:600;
 cursor:pointer;
@@ -201,7 +198,7 @@ color:black;
 /* TIMER */
 
 .timer{
-font-size:110px;
+font-size:120px;
 font-weight:700;
 margin-bottom:25px;
 }
@@ -212,13 +209,14 @@ margin-bottom:25px;
 display:flex;
 justify-content:center;
 gap:15px;
-margin-bottom:40px;
+margin-bottom:35px;
+flex-wrap:wrap;
 }
 
 .control-btn{
 padding:16px 50px;
-border-radius:50px;
 border:none;
+border-radius:50px;
 background:white;
 color:black;
 font-size:20px;
@@ -227,72 +225,144 @@ cursor:pointer;
 }
 
 .icon-btn{
-font-size:18px;
 padding:10px 14px;
+border:none;
 border-radius:50%;
 background:rgba(255,255,255,.15);
-border:none;
 color:white;
+font-size:18px;
 cursor:pointer;
 }
 
 /* SPOTIFY */
 
 .spotify-panel{
-margin-top:15px;
+margin-top:20px;
 padding:26px;
-border-radius:24px;
+border-radius:28px;
 background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.18);
 backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,.25);
-box-shadow:0 25px 60px rgba(0,0,0,.6);
 display:none;
+box-shadow:0 20px 50px rgba(0,0,0,.4);
 }
 
 .spotify-loader{
 display:flex;
-justify-content:center;
 gap:10px;
+justify-content:center;
+flex-wrap:wrap;
 }
 
 .playlist-input{
 width:60%;
 padding:14px 18px;
-border-radius:30px;
 border:none;
 outline:none;
+border-radius:30px;
 font-size:14px;
 }
 
 .load-btn{
-padding:14px 26px;
+padding:14px 24px;
 border:none;
 border-radius:30px;
 background:#1DB954;
 color:white;
-font-weight:600;
+font-weight:700;
 cursor:pointer;
 }
 
 .spotify-player{
-margin-top:15px;
+margin-top:18px;
+}
+
+/* WATER TRACKER */
+
+.water-widget{
+margin-top:30px;
+padding:24px;
+border-radius:28px;
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.18);
+box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+
+.water-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+text-align:left;
+}
+
+.water-top h3{
+font-size:24px;
+margin-bottom:4px;
+}
+
+.water-top p{
+font-size:14px;
+color:rgba(255,255,255,.75);
+}
+
+.water-count{
+font-size:18px;
+font-weight:700;
+}
+
+.cups{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-bottom:22px;
+}
+
+.cup{
+height:70px;
+border-radius:18px;
+border:2px solid rgba(255,255,255,.4);
+background:rgba(255,255,255,.05);
+transition:.3s ease;
+}
+
+.cup.filled{
+background:rgba(120,190,255,.95);
+transform:translateY(-3px);
+box-shadow:0 10px 25px rgba(120,190,255,.35);
+}
+
+.water-btn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:20px;
+background:white;
+color:black;
+font-size:16px;
+font-weight:700;
+cursor:pointer;
+transition:.25s;
+}
+
+.water-btn:hover{
+transform:scale(1.02);
 }
 
 /* FOOTER */
 
 .footer-note{
 position:fixed;
-bottom:18px;
+bottom:16px;
 left:50%;
 transform:translateX(-50%);
 font-size:14px;
-font-weight:500;
-color:rgba(255,255,255,0.8);
-letter-spacing:0.3px;
+color:rgba(255,255,255,.8);
 pointer-events:none;
 }
 
-/* ANIMATIONS */
+/* ANIMATION */
 
 @keyframes fadeUp{
 
@@ -310,23 +380,28 @@ transform:translateY(0);
 
 /* MOBILE */
 
-@media(max-width:600px){
+@media(max-width:700px){
 
 .timer{
-font-size:72px;
+font-size:80px;
 }
 
 .prep-timer{
-font-size:60px;
-}
-
-.control-btn{
-padding:14px 38px;
-font-size:18px;
+font-size:64px;
 }
 
 .playlist-input{
 width:100%;
+}
+
+.water-top{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+.cup{
+height:55px;
 }
 
 .intention-card h1{
@@ -340,7 +415,7 @@ font-size:34px;
 
 <body>
 
-<!-- INTENTION SCREEN -->
+<!-- INTENTION -->
 
 <div class="intention-screen" id="intentionScreen">
 
@@ -372,7 +447,7 @@ Before you begin, take a moment to reset your space and mind.
 
 </div>
 
-<!-- PREPARATION SCREEN -->
+<!-- PREP -->
 
 <div class="prep-screen" id="prepScreen">
 
@@ -398,9 +473,11 @@ Skip
 
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 
 <div class="app" id="app">
+
+<!-- MODES -->
 
 <div class="modes">
 
@@ -418,9 +495,13 @@ Long Break
 
 </div>
 
+<!-- TIMER -->
+
 <div class="timer" id="timer">
 60:00
 </div>
+
+<!-- CONTROLS -->
 
 <div class="controls">
 
@@ -467,6 +548,42 @@ allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-pictur
 </iframe>
 
 </div>
+
+</div>
+
+<!-- WATER TRACKER -->
+
+<div class="water-widget">
+
+<div class="water-top">
+
+<div>
+<h3>Hydration</h3>
+<p>Drink water every 15 minutes 💧</p>
+</div>
+
+<div class="water-count" id="waterCount">
+0 / 8 Cups
+</div>
+
+</div>
+
+<div class="cups">
+
+<div class="cup"></div>
+<div class="cup"></div>
+<div class="cup"></div>
+<div class="cup"></div>
+<div class="cup"></div>
+<div class="cup"></div>
+<div class="cup"></div>
+<div class="cup"></div>
+
+</div>
+
+<button class="water-btn" onclick="addCup()">
++ Add Cup
+</button>
 
 </div>
 
@@ -518,6 +635,7 @@ updateDisplay()
 
 clearInterval(timerInterval)
 running = false
+
 document.getElementById("startPause").innerText = "Start"
 
 alert("Session complete 🎉")
@@ -565,7 +683,7 @@ long:"url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2
 function setMode(mode,minutes,btn){
 
 document.querySelectorAll(".mode-btn")
-.forEach(b => b.classList.remove("active"))
+.forEach(b=>b.classList.remove("active"))
 
 btn.classList.add("active")
 
@@ -577,7 +695,7 @@ document.body.style.backgroundImage = backgrounds[mode]
 
 }
 
-/* MUSIC PANEL */
+/* MUSIC */
 
 let musicOpen = false
 
@@ -599,7 +717,7 @@ musicOpen = true
 
 }
 
-/* PLAYLIST IMPORT */
+/* SPOTIFY */
 
 function loadPlaylist(){
 
@@ -629,7 +747,7 @@ alert("Invalid playlist link")
 
 }
 
-/* PREPARATION TIMER */
+/* PREPARATION */
 
 let prepTime = 300
 let prepInterval = null
@@ -683,6 +801,48 @@ document.getElementById("prepScreen").style.display = "none"
 document.getElementById("app").classList.add("show")
 
 }
+
+/* WATER TRACKER */
+
+let cupsDrank = 0
+
+const cups = document.querySelectorAll(".cup")
+
+function addCup(){
+
+if(cupsDrank >= 8){
+
+alert("Hydration goal completed 💧")
+return
+
+}
+
+cups[cupsDrank].classList.add("filled")
+
+cupsDrank++
+
+updateWaterCount()
+
+}
+
+function updateWaterCount(){
+
+document.getElementById("waterCount").innerText =
+`${cupsDrank} / 8 Cups`
+
+}
+
+/* WATER REMINDER */
+
+setInterval(()=>{
+
+if(running){
+
+alert("Time to drink some water 💧")
+
+}
+
+},15 * 60 * 1000)
 
 </script>
 
