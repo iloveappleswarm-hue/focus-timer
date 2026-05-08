@@ -404,8 +404,8 @@ Skip
 
 <div class="modes">
 
-<button class="mode-btn active" onclick="setMode('pomodoro',25,this)">
-Pomodoro
+<button class="mode-btn active" onclick="setMode('pomodoro',60,this)">
+Deep Focus
 </button>
 
 <button class="mode-btn" onclick="setMode('short',5,this)">
@@ -419,7 +419,7 @@ Long Break
 </div>
 
 <div class="timer" id="timer">
-25:00
+60:00
 </div>
 
 <div class="controls">
@@ -482,7 +482,7 @@ made by sid for rey, happy 19 rey. 💜
 
 /* MAIN TIMER */
 
-let defaultTime = 25 * 60
+let defaultTime = 60 * 60
 let time = defaultTime
 let timerInterval = null
 let running = false
