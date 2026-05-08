@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <title>Focus Timer</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -27,9 +28,10 @@ align-items:center;
 color:white;
 background:url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070") center/cover;
 position:relative;
+overflow:hidden;
 }
 
-/* Background blur overlay */
+/* BACKGROUND OVERLAY */
 
 body::before{
 content:"";
@@ -40,10 +42,135 @@ background:rgba(0,0,0,0.25);
 z-index:-1;
 }
 
+/* MAIN APP */
+
 .app{
 text-align:center;
 width:90%;
 max-width:900px;
+opacity:0;
+pointer-events:none;
+transition:.6s ease;
+}
+
+.app.show{
+opacity:1;
+pointer-events:auto;
+}
+
+/* INTENTION SCREEN */
+
+.intention-screen{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.55);
+backdrop-filter:blur(14px);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:999;
+transition:.5s ease;
+}
+
+.intention-card{
+width:90%;
+max-width:560px;
+padding:50px 40px;
+border-radius:32px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.2);
+backdrop-filter:blur(20px);
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,.45);
+animation:fadeUp .6s ease;
+}
+
+.intention-card h1{
+font-size:44px;
+margin-bottom:15px;
+}
+
+.intention-card p{
+font-size:16px;
+line-height:1.7;
+color:rgba(255,255,255,.82);
+margin-bottom:35px;
+}
+
+.intention-options{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.intention-options button{
+padding:18px;
+border:none;
+border-radius:22px;
+background:white;
+color:black;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+transition:.25s;
+}
+
+.intention-options button:hover{
+transform:translateY(-2px) scale(1.02);
+}
+
+/* PREPARATION SCREEN */
+
+.prep-screen{
+position:fixed;
+inset:0;
+display:none;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,.55);
+backdrop-filter:blur(14px);
+z-index:998;
+}
+
+.prep-card{
+width:90%;
+max-width:520px;
+padding:50px 40px;
+border-radius:32px;
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.2);
+backdrop-filter:blur(20px);
+text-align:center;
+box-shadow:0 20px 60px rgba(0,0,0,.45);
+animation:fadeUp .5s ease;
+}
+
+.prep-label{
+font-size:20px;
+margin-bottom:10px;
+color:rgba(255,255,255,.8);
+}
+
+.prep-task{
+font-size:36px;
+font-weight:700;
+margin-bottom:30px;
+}
+
+.prep-timer{
+font-size:80px;
+font-weight:700;
+margin-bottom:25px;
+}
+
+.skip-btn{
+padding:14px 28px;
+border:none;
+border-radius:30px;
+background:white;
+color:black;
+font-weight:700;
+cursor:pointer;
 }
 
 /* MODES */
@@ -63,6 +190,7 @@ background:rgba(255,255,255,.05);
 color:white;
 font-weight:600;
 cursor:pointer;
+transition:.25s;
 }
 
 .mode-btn.active{
@@ -108,7 +236,7 @@ color:white;
 cursor:pointer;
 }
 
-/* SPOTIFY PANEL */
+/* SPOTIFY */
 
 .spotify-panel{
 margin-top:15px;
@@ -120,8 +248,6 @@ border:1px solid rgba(255,255,255,.25);
 box-shadow:0 25px 60px rgba(0,0,0,.6);
 display:none;
 }
-
-/* INPUT */
 
 .spotify-loader{
 display:flex;
@@ -148,13 +274,11 @@ font-weight:600;
 cursor:pointer;
 }
 
-/* PLAYER */
-
 .spotify-player{
 margin-top:15px;
 }
 
-/* FOOTER MESSAGE */
+/* FOOTER */
 
 .footer-note{
 position:fixed;
@@ -168,21 +292,45 @@ letter-spacing:0.3px;
 pointer-events:none;
 }
 
+/* ANIMATIONS */
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
 /* MOBILE */
 
 @media(max-width:600px){
 
 .timer{
-font-size:70px;
+font-size:72px;
+}
+
+.prep-timer{
+font-size:60px;
 }
 
 .control-btn{
-padding:14px 40px;
+padding:14px 38px;
 font-size:18px;
 }
 
 .playlist-input{
 width:100%;
+}
+
+.intention-card h1{
+font-size:34px;
 }
 
 }
@@ -192,7 +340,67 @@ width:100%;
 
 <body>
 
-<div class="app">
+<!-- INTENTION SCREEN -->
+
+<div class="intention-screen" id="intentionScreen">
+
+<div class="intention-card">
+
+<h1>Set your intention</h1>
+
+<p>
+Before you begin, take a moment to reset your space and mind.
+</p>
+
+<div class="intention-options">
+
+<button onclick="startPreparation('📝 Plan')">
+📝 Plan
+</button>
+
+<button onclick="startPreparation('🧹 Clean')">
+🧹 Clean
+</button>
+
+<button onclick="startPreparation('🥤 Snack or Drink')">
+🥤 Snack or Drink
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- PREPARATION SCREEN -->
+
+<div class="prep-screen" id="prepScreen">
+
+<div class="prep-card">
+
+<div class="prep-label">
+Preparation Time
+</div>
+
+<div class="prep-task" id="prepTask">
+📝 Plan
+</div>
+
+<div class="prep-timer" id="prepTimer">
+05:00
+</div>
+
+<button class="skip-btn" onclick="enterApp()">
+Skip
+</button>
+
+</div>
+
+</div>
+
+<!-- MAIN APP -->
+
+<div class="app" id="app">
 
 <div class="modes">
 
@@ -210,7 +418,9 @@ Long Break
 
 </div>
 
-<div class="timer" id="timer">25:00</div>
+<div class="timer" id="timer">
+25:00
+</div>
 
 <div class="controls">
 
@@ -218,9 +428,13 @@ Long Break
 Start
 </button>
 
-<button class="icon-btn" onclick="resetTimer()">⟳</button>
+<button class="icon-btn" onclick="resetTimer()">
+⟳
+</button>
 
-<button class="icon-btn" onclick="toggleMusic()">🎵</button>
+<button class="icon-btn" onclick="toggleMusic()">
+🎵
+</button>
 
 </div>
 
@@ -258,7 +472,7 @@ allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-pictur
 
 </div>
 
-<!-- MESSAGE -->
+<!-- FOOTER -->
 
 <div class="footer-note">
 made by sid for rey, happy 19 rey. 💜
@@ -266,19 +480,19 @@ made by sid for rey, happy 19 rey. 💜
 
 <script>
 
-/* TIMER */
+/* MAIN TIMER */
 
-let time=60*60
-let defaultTime=25*60
-let timerInterval=null
-let running=false
+let defaultTime = 25 * 60
+let time = defaultTime
+let timerInterval = null
+let running = false
 
 function updateDisplay(){
 
-let minutes=Math.floor(time/60)
-let seconds=time%60
+let minutes = Math.floor(time / 60)
+let seconds = time % 60
 
-document.getElementById("timer").innerText=
+document.getElementById("timer").innerText =
 `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`
 
 }
@@ -288,14 +502,14 @@ function toggleTimer(){
 if(running){
 
 clearInterval(timerInterval)
-document.getElementById("startPause").innerText="Start"
-running=false
+running = false
+document.getElementById("startPause").innerText = "Start"
 
 }else{
 
-timerInterval=setInterval(()=>{
+timerInterval = setInterval(()=>{
 
-if(time>0){
+if(time > 0){
 
 time--
 updateDisplay()
@@ -303,16 +517,17 @@ updateDisplay()
 }else{
 
 clearInterval(timerInterval)
+running = false
+document.getElementById("startPause").innerText = "Start"
+
 alert("Session complete 🎉")
-running=false
-document.getElementById("startPause").innerText="Start"
 
 }
 
 },1000)
 
-document.getElementById("startPause").innerText="Pause"
-running=true
+running = true
+document.getElementById("startPause").innerText = "Pause"
 
 }
 
@@ -321,10 +536,15 @@ running=true
 function resetTimer(){
 
 clearInterval(timerInterval)
-time=defaultTime
+
+timerInterval = null
+running = false
+
+time = defaultTime
+
 updateDisplay()
-running=false
-document.getElementById("startPause").innerText="Start"
+
+document.getElementById("startPause").innerText = "Start"
 
 }
 
@@ -332,43 +552,48 @@ updateDisplay()
 
 /* BACKGROUNDS */
 
-const backgrounds={
+const backgrounds = {
+
 pomodoro:"url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=2070')",
+
 short:"url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2070')",
+
 long:"url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070')"
+
 }
 
 function setMode(mode,minutes,btn){
 
 document.querySelectorAll(".mode-btn")
-.forEach(b=>b.classList.remove("active"))
+.forEach(b => b.classList.remove("active"))
 
 btn.classList.add("active")
 
-defaultTime=minutes*60
+defaultTime = minutes * 60
+
 resetTimer()
 
-document.body.style.backgroundImage=backgrounds[mode]
+document.body.style.backgroundImage = backgrounds[mode]
 
 }
 
-/* MUSIC TOGGLE */
+/* MUSIC PANEL */
 
-let musicOpen=false
+let musicOpen = false
 
 function toggleMusic(){
 
-const panel=document.getElementById("spotifyPanel")
+const panel = document.getElementById("spotifyPanel")
 
 if(musicOpen){
 
-panel.style.display="none"
-musicOpen=false
+panel.style.display = "none"
+musicOpen = false
 
 }else{
 
-panel.style.display="block"
-musicOpen=true
+panel.style.display = "block"
+musicOpen = true
 
 }
 
@@ -378,23 +603,88 @@ musicOpen=true
 
 function loadPlaylist(){
 
-let url=document.getElementById("playlistInput").value
+let url = document.getElementById("playlistInput").value
 
 if(!url.includes("spotify.com")){
+
 alert("Paste a valid Spotify playlist link")
 return
+
 }
 
-let id=url.split("playlist/")[1].split("?")[0]
+try{
 
-let embed="https://open.spotify.com/embed/playlist/"+id
+let id = url.split("playlist/")[1].split("?")[0]
 
-document.getElementById("spotifyPlayer").src=embed
+let embed =
+`https://open.spotify.com/embed/playlist/${id}`
+
+document.getElementById("spotifyPlayer").src = embed
+
+}catch{
+
+alert("Invalid playlist link")
+
+}
+
+}
+
+/* PREPARATION TIMER */
+
+let prepTime = 300
+let prepInterval = null
+
+function startPreparation(task){
+
+document.getElementById("prepTask").innerText = task
+
+document.getElementById("intentionScreen").style.display = "none"
+
+document.getElementById("prepScreen").style.display = "flex"
+
+prepTime = 300
+
+updatePrepDisplay()
+
+prepInterval = setInterval(()=>{
+
+if(prepTime > 0){
+
+prepTime--
+updatePrepDisplay()
+
+}else{
+
+clearInterval(prepInterval)
+enterApp()
+
+}
+
+},1000)
+
+}
+
+function updatePrepDisplay(){
+
+let minutes = Math.floor(prepTime / 60)
+let seconds = prepTime % 60
+
+document.getElementById("prepTimer").innerText =
+`${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`
+
+}
+
+function enterApp(){
+
+clearInterval(prepInterval)
+
+document.getElementById("prepScreen").style.display = "none"
+
+document.getElementById("app").classList.add("show")
 
 }
 
 </script>
 
 </body>
-
 </html>
